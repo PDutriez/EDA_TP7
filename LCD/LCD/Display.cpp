@@ -1,5 +1,4 @@
 #include "Display.h"
-#include <unistd>
 #include <Windows.h>
 
 bool initDisplay(const char * displayName, FT_HANDLE& display)
@@ -19,12 +18,9 @@ bool initDisplay(const char * displayName, FT_HANDLE& display)
 			lcdWriteNyble(display, FUNSET_8BITS, RS_INSTRUCTION);
 			lcdWriteNyble(display, FUNSET_4BITS, RS_INSTRUCTION); // Mandamos el modo de 4 bits
 			lcd_SendData(FUNSET_2LINES_5X8, RS_INSTRUCTION, display); //Enviamos Funcion set en modo 4 bits, 2 líneas y fuente de 5x8 
-			//DiplayOnOff config
-			lcd_SendData(DISPLAYONOFF, RS_INSTRUCTION, display);	//0x0E
-			//limpiar la pantalla
-			lcd_SendData(FUNCIONCLEAR, RS_INSTRUCTION, display);
-			//Entry mode set
-			lcd_SendData(ENTRYMODESET, RS_INSTRUCTION, display);	//0x0C
+			lcd_SendData(DISPLAYONOFF, RS_INSTRUCTION, display);	//DiplayOnOff config
+			lcd_SendData(FUNCLEAR, RS_INSTRUCTION, display);	//limpiar la pantalla
+			lcd_SendData(ENTRYMODESET, RS_INSTRUCTION, display);	//Entry mode set
 		}
 	}
 	return init;
@@ -36,35 +32,35 @@ void lcd_SendData(byte data, bool rs_, FT_HANDLE& handle)
 	lcdWriteNyble(handle, data, rs_);			//mando el nybble menos significativo.
 }
 
-void lcdWriteNyble(FT_HANDLE& h, byte d, bool rs_)
+void lcdWriteNyble(FT_HANDLE& handle, byte data, bool rs_)
 {
 	DWORD sent = 0;
 	unsigned char temp;
-	temp = ((d << 4) & (byte)(0xF0));
+	temp = ((data << 4) & (byte)(0xF0));
 	if (rs_)
 	{	//Secuencia de envio de Nybles para la interpretacion de una instruccion del lcd
 		temp = (temp & LCD_ENABLE_OFF);
-		FT_Write(h, (LPVOID)&temp, sizeof(temp), &sent);
+		FT_Write(handle, (LPVOID)&temp, sizeof(temp), &sent);
 		Sleep(1);								//delay de 1 ms
 		temp = (temp | (LCD_ENABLE_ON));
-		FT_Write(h, (LPVOID)&temp, sizeof(temp), &sent);
+		FT_Write(handle, (LPVOID)&temp, sizeof(temp), &sent);
 		wait(3);								//delay de 3ms.
 		temp = (temp & LCD_ENABLE_OFF);
-		FT_Write(h, (LPVOID)&temp, sizeof(temp), &sent);
+		FT_Write(handle, (LPVOID)&temp, sizeof(temp), &sent);
 		wait(1);								//delay de 1 ms
 	}
 	else
 	{	//Idem para un dato
 		temp = (temp | (0x02)) & (LCD_ENABLE_OFF);
-		FT_Write(h, (LPVOID)&temp, sizeof(temp), &sent);
+		FT_Write(handle, (LPVOID)&temp, sizeof(temp), &sent);
 		Sleep(1);								//delay de 1 ms
 		sent = 0;
 		temp = temp | (LCD_ENABLE_ON);
-		FT_Write(h, (LPVOID)&temp, sizeof(temp), &sent);
+		FT_Write(handle, (LPVOID)&temp, sizeof(temp), &sent);
 		Sleep(3);								//delay de 3ms.
 		sent = 0;
 		temp = temp & (LCD_ENABLE_OFF);
-		FT_Write(h, (LPVOID)&temp, sizeof(temp), &sent);
+		FT_Write(handle, (LPVOID)&temp, sizeof(temp), &sent);
 		Sleep(1);
 	}
 }
