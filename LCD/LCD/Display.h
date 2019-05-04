@@ -6,11 +6,11 @@
 /************************************ CONSTANTES ***********************************/
 #define LCD_ENABLE_ON 0x01
 #define LCD_ENABLE_OFF 0xFE
-#define RS_INSTRUCTION 1	//Flag identificador de instruccion de RS							
+#define RS_INST 1	//Flag identificador de instruccion de RS							
 #define RS_DATA 0 //Flag identificador de data de RS
-#define FUNCLEAR 0x01 //Funcion Clear
-#define FUNSET 0x02 //Funcion set y config
-#define FUNSET_8BITS (FUNSET | 0x01)
+#define FUNCLR 0x01 //Funcion Clear
+#define FUNSET 0x02 //Function Set
+#define FUNSET_8BITS (FUNSET | 0x01) //Set LCD to 8 bits
 #define FUNSET_4BITS FUNSET
 #define FUNSET_2LINES_5X8 ( (FUNSET_4BITS << 4) | 0x08 )	
 #define DISPLAYONOFF 0x0E //Display control con todo set off
