@@ -121,6 +121,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BasicLCD.h" />
     <ClInclude Include="Display.h" />
     <ClInclude Include="libraries\ftd2xx.h" />
   </ItemGroup>

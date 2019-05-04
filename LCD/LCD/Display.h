@@ -1,8 +1,8 @@
 #pragma once
 /*********************************** BIBLIOTECAS ***********************************/
+#include <Windows.h>
 #define FTD2XX_EXPORTS //Debe definirse la constante antes de la biblioteca
 #include "ftd2xx.h"
-//#include "Timer.h"
 /************************************ CONSTANTES ***********************************/
 #define LCD_ENABLE_ON 0x01
 #define LCD_ENABLE_OFF 0xFE
@@ -15,7 +15,8 @@
 #define FUNSET_2LINES_5X8 ( (FUNSET_4BITS << 4) | 0x08 )	
 #define DISPLAYONOFF 0x0E //Display control con todo set off
 #define ENTRYMODESET 0x0C //Entry set mode para inicializacion
-
+#define MS_NYBBLE(a)	(a << 4) //Most Significant Nybble
+#define LS_NYBBLE(a)	(a >> 4) //Less Significant Nybble
 typedef unsigned long DWORD;
 /************************************ FUNCIONES ***********************************/
 /*INITDISPLAY: Inicializa el display correctamente.
@@ -39,4 +40,4 @@ void lcd_SendData(byte data, bool rs, FT_HANDLE& handle);
 *			- data: el byte con la informacion o instruccion.
 *			- rs: flag de instruccion o dato.
 */
-void lcdWriteNyble(FT_HANDLE & h, byte data, bool rs_);
+void lcdWriteNyble(FT_HANDLE & h, byte data, char rs_);
