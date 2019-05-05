@@ -130,12 +130,11 @@
   <ItemGroup>
     <ClInclude Include="BasicLCD.h" />
     <ClInclude Include="fase1.h" />
-    <ClInclude Include="fase2.h" />
     <ClInclude Include="ftd2xx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BasicLCD.cpp" />
     <ClCompile Include="fase1.cpp" />
-    <ClCompile Include="fase2.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

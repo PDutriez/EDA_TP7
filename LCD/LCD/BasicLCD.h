@@ -2,6 +2,7 @@
 #include <Windows.h>
 #define FTD2XX_EXPORTS //Debe definirse la constante antes de la biblioteca
 #include "ftd2xx.h"
+#include "fase1.h"
 
 struct cursorPosition
 {
@@ -20,7 +21,7 @@ public:
 	*
 	* cadd =1 (cursor address) (ver NOTA 1)
 	*=====================================================*/
-	basicLCD() {};
+	basicLCD();
 
 	/*=====================================================
 	* Name: ~basicLCD
@@ -29,7 +30,7 @@ public:
 	* que se hubiera tomado de forma de evitar
 	* "resources leak".
 	*=====================================================*/
-	~basicLCD() {};
+	~basicLCD();
 	/*=====================================================
 	* Name: lcdInitOk
 	* Entra: -
@@ -105,6 +106,8 @@ public:
 	* Devuelve en su nombre “true” si fue satisfactoria “false”
 	* en caso contrario.
 	*=====================================================*/
+
+	/*Phil*/
 	virtual bool lcdMoveCursorUp() = 0;
 	/*=====================================================
 	* Name: lcdMoveCursorDown
@@ -183,4 +186,5 @@ protected:
 	* para cadd. Este nuevo valor de cadd deberá ser transferido
 	* al cursor del display para poder sincronizar ambos.
 	*=====================================================*/
-	virtual void lcdUpdateCursor() = 0;
+	void lcdUpdateCursor(void);
+};
