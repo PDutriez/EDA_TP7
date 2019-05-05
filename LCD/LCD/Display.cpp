@@ -1,4 +1,4 @@
-#include "Display.h" 
+/*#include "Display.h" 
 
 bool initDisplay(const char * displayName, FT_HANDLE& display)
 {
@@ -67,3 +67,4 @@ void lcdWriteNyble(FT_HANDLE& handle, byte data, char rs_)
 		Sleep(1);
 	}
 }
+*/

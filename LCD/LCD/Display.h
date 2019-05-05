@@ -13,10 +13,10 @@
 #define FUNSET_8BITS (FUNSET | 0x01) //Set LCD to 8 bits
 #define FUNSET_4BITS FUNSET
 #define FUNSET_2LINES_5X8 ( (FUNSET_4BITS << 4) | 0x08 )	
-#define DISPLAYONOFF 0x0E //Display control con todo set off
-#define ENTRYMODESET 0x0C //Entry set mode para inicializacion
-#define MS_NYBBLE(a)	(a << 4) //Most Significant Nybble
-#define LS_NYBBLE(a)	(a >> 4) //Less Significant Nybble
+#define DISPLAYONOFF 0x08 //Display control con todo set off
+//#define ENTRYMODESET 0x0C //Entry set mode para inicializacion
+#define MS_NIBBLE(a)	(a << 4) //Most Significant Nybble
+#define LS_NIBBLE(a)	(a >> 4) //Less Significant Nybble
 typedef unsigned long DWORD;
 /************************************ FUNCIONES ***********************************/
 /*INITDISPLAY: Inicializa el display correctamente.
