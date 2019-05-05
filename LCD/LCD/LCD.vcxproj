@@ -128,6 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BasicLCD.h" />
     <ClInclude Include="Display.h" />
     <ClInclude Include="fase1.h" />
     <ClInclude Include="ftd2xx.h" />
