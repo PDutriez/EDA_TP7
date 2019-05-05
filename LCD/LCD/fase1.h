@@ -2,7 +2,6 @@
 /*********************************** BIBLIOTECAS ***********************************/
 #define FTD2XX_EXPORTS //Debe definirse la constante antes de la biblioteca
 #include "ftd2xx.h"
-//#include "Timer.h"
 /*********************************** CONSTANTES ***********************************/
 //Asignacion de nombres a las posiciones fisicas de los bits
 #define PORT_P0 0

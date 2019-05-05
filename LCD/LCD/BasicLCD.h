@@ -1,5 +1,7 @@
 #pragma once
 #include <Windows.h>
+#define FTD2XX_EXPORTS //Debe definirse la constante antes de la biblioteca
+#include "ftd2xx.h"
 
 struct cursorPosition
 {

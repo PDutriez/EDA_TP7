@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Display.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="ftd2xx.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
@@ -33,9 +30,6 @@
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="fase1.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="Display.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
