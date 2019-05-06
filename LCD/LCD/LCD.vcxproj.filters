@@ -3,7 +3,6 @@
   <ItemGroup>
     <ClCompile Include="fase1.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="BasicLCD.cpp" />
     <ClCompile Include="HitachiLCD.cpp" />
   </ItemGroup>
   <ItemGroup>

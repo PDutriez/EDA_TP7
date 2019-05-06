@@ -75,9 +75,6 @@
 
 typedef unsigned long DWORD;
 
-
-
-
 /*********************************** FUNCIONES ***********************************/
 /*LCDINIT: Inicializa el display correctamente.
 * RECIBE:	- displayName: nombre del display

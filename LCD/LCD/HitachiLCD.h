@@ -1,7 +1,7 @@
 #pragma once
 #include "BasicLCD.h"
 
-class HitachiLCD :basicLCD
+class HitachiLCD :public basicLCD
 {
 public:
 	HitachiLCD();
@@ -136,8 +136,7 @@ public:
 	*=====================================================*/
 	virtual cursorPosition lcdGetCursorPosition();
 
-protected:
-
 private:
-
+	FT_HANDLE  handler;
+	virtual void lcdUpdateCursor();
 };
