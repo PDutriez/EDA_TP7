@@ -4,10 +4,12 @@
     <ClCompile Include="fase1.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="BasicLCD.cpp" />
+    <ClCompile Include="HitachiLCD.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicLCD.h" />
     <ClInclude Include="fase1.h" />
     <ClInclude Include="ftd2xx.h" />
+    <ClInclude Include="HitachiLCD.h" />
   </ItemGroup>
 </Project>

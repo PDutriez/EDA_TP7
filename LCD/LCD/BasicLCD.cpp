@@ -10,7 +10,7 @@ basicLCD::~basicLCD()
 
 }
 
-void basicLCD::lcdUpdateCursor(void)
+void basicLCD::lcdUpdateCursor()
 {
 
 }
