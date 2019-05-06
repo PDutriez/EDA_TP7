@@ -1,4 +1,5 @@
 #include "HitachiLCD.h"
+#include <string.h>
 /*********************************** CONSTANTES ***********************************/
 #define MIN_ROW 0				//Cantidad Minima de filas
 #define MAX_ROW 1				//Cantidad Maxima de filas
@@ -13,34 +14,88 @@
 #define DDRAM_ADRESS 0x80		//Comando para setear DDRAM
 #define OFFSET_SECOND_LINE 0x30	//Distancia entre primer y segunda linea
 #define ERROR_POS -1 //Valor de error para posiciones
+
+HitachiLCD::HitachiLCD()
+{
+	cadd = 1;
+	const char * displayname = "EDA LCD 2 B";
+	if (!lcdInit(displayname, handler))
+	{
+		init_ok = false;
+		return;
+	}
+	init_ok = true;
+	status = FT_OK;
+	lcdWriteByte(handler, 0x0F, RS_INST);		//tratar de hacer un define de 0xf0(display on)
+	lcdUpdateCursor();
+}
+HitachiLCD::~HitachiLCD()
+{
+	FT_Close(handler);
+
+}
 bool HitachiLCD::lcdInitOk()
 {
-
+	return init_ok;
 }
 
 FT_STATUS HitachiLCD::lcdGetError()
 {
-
+	return status;
 }
 
 bool HitachiLCD::lcdClear()
 {
-
+	cursorPosition pos;
+	pos.column = 0;
+	pos.row = 0;
+	lcdWriteByte(handler, LCD_CLEAR_DISPLAY, RS_INST);
+	lcdSetCursorPosition(pos);
 }
 
 bool HitachiLCD::lcdClearToEOL()
 {
-
+	for (int i = (cadd % (MAX_COL + 1)); i <= (MAX_COL + 1); i++)
+	{
+		*this << ' ';
+		//lcdWriteByte(handler, ' ', RS_DATA);
+	}
+	lcdUpdateCursor();
+	return true;
 }
 
 basicLCD& HitachiLCD::operator<<(const unsigned char c)
 {
+	lcdWriteByte(handler, c, RS_DATA);
+	lcdMoveCursorRight();
+	return *this;
 
 }
 
 basicLCD& HitachiLCD::operator<<(const unsigned char * c)
 {
-
+	//Aca hay que considerar algunas cosas (borrar display o sobreescritura).
+	//Si no se discute esto el lunes, preguntar a Richi cuando se vea este mensaje.
+	const char * str =(const char *) c;
+	int len = strlen(str);
+	if (len > 32)
+	{
+		int beg = len - 32;
+		for (int i = beg; i <= len; i++)
+		{
+			*this << c[i];
+			//lcdWriteByte(handler, c[i], RS_DATA);
+		}
+	}
+	else
+	{
+		for (int i = 0; i < len; i++)
+		{
+			*this << c[i];
+			//lcdWriteByte(handler, c[i], RS_DATA);
+		}
+	}
+	return *this;
 }
 
 /*Phil*/
