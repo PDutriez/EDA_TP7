@@ -29,6 +29,7 @@ bool lcdInit(const char * displayName, FT_HANDLE& display)
 			Sleep(10);
 			lcdWriteByte(display,ENTRYMODESET, RS_INST);	//Entry mode set
 		}
+		return init;
 	}
 	else
 	{

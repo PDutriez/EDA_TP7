@@ -137,7 +137,7 @@ public:
 	virtual cursorPosition lcdGetCursorPosition();
 
 private:
-	FT_HANDLE  handler;
+	FT_HANDLE handler;
 	FT_STATUS status;
 	bool init_ok;
 	virtual void lcdUpdateCursor();

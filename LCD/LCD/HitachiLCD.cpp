@@ -1,5 +1,6 @@
 #include "HitachiLCD.h"
 #include <string.h>
+#include <stdio.h>
 /*********************************** CONSTANTES ***********************************/
 #define MIN_ROW 0				//Cantidad Minima de filas
 #define MAX_ROW 1				//Cantidad Maxima de filas
@@ -17,17 +18,22 @@
 
 HitachiLCD::HitachiLCD()
 {
-	cadd = 1;
+	//cadd = 1;
+	cadd = 0;
 	const char * displayname = "EDA LCD 2 B";
 	if (!lcdInit(displayname, handler))
 	{
+		printf("ERROR");
 		init_ok = false;
 		return;
 	}
 	init_ok = true;
 	status = FT_OK;
 	lcdWriteByte(handler, 0x0F, RS_INST);		//tratar de hacer un define de 0xf0(display on)
-	lcdUpdateCursor();
+	//lcdUpdateCursor();
+
+
+	//lcdWriteByte(handler, 'A', RS_DATA);
 }
 HitachiLCD::~HitachiLCD()
 {
@@ -51,6 +57,7 @@ bool HitachiLCD::lcdClear()
 	pos.row = 0;
 	lcdWriteByte(handler, LCD_CLEAR_DISPLAY, RS_INST);
 	lcdSetCursorPosition(pos);
+	return true;
 }
 
 bool HitachiLCD::lcdClearToEOL()
@@ -153,7 +160,7 @@ HitachiLCD::lcdMoveCursorRight()
 			newPos.column = 0;
 		}
 */
-		return(lcdSetCursorPosition(newPos));
+		return(lcdSetCursorPosition(newPos)); //segmentation fault, newPos not initialized
 		
 	}
 	else return false;//Estoy al final

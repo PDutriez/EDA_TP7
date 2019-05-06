@@ -1,15 +1,20 @@
 #include <Windows.h>
 #include "fase1.h"
 #include <stdio.h>
+#include "HitachiLCD.h"
 
 int main(void)
 {
-	FT_HANDLE handle;
+	HitachiLCD lcd;
+	//FT_HANDLE handle;
 	const char * displayname = "EDA LCD 2 B";
-	lcdInit(displayname, handle);
-	const char text[] = "Phil, funciona!AAAA";
+	//lcdInit(displayname, handle);
+	const unsigned char text1[] = "Phil, funciona!";
+	const unsigned char text2[] = "AAAA";
 	
-	lcdWriteByte(handle, 0x0F, RS_INST);
+	//lcdWriteByte(handle, 0x0F, RS_INST);
+
+	/*
 	for (int i = 0; i < 15; i++)
 	{
 		lcdWriteByte(handle, text[i], RS_DATA);
@@ -24,7 +29,17 @@ int main(void)
 	{
 		lcdWriteByte(handle, text[i], RS_DATA);
 	}
+	*/
+	 
+
+	lcd << text1;
+	cursorPosition pos;
+	pos.column = 0;
+	pos.row = 1;
+	lcd.lcdSetCursorPosition(pos); //no funciona
+	lcd << text2;
+
 	printf("press enter\n");
 	getchar();
-	FT_Close(handle);
+	//FT_Close(handle);
 }
