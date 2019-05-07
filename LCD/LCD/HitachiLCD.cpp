@@ -4,8 +4,8 @@
 /*********************************** CONSTANTES ***********************************/
 #define MIN_ROW 0				//Cantidad Minima de filas
 #define MAX_ROW 1				//Cantidad Maxima de filas
-#define MIN_COL 0				//Cantidad Minima de columnas
-#define MAX_COL 15				//Cantidad Maxima de columnas
+#define MIN_COL 1				//Cantidad Minima de columnas
+#define MAX_COL 16				//Cantidad Maxima de columnas
 #define BEGIN_FIRST_LINE 0		//Inicio de la primera linea
 #define END_FIRST_LINE 15		//Fin de la primera linea
 #define BEGIN_SECOND_LINE 16	//Inicio de la Segunda linea
@@ -23,7 +23,7 @@ HitachiLCD::HitachiLCD()
 	const char * displayname = "EDA LCD 2 B";
 	if (!lcdInit(displayname, handler))
 	{
-		printf("ERROR");
+		printf("ERROR: Cannot initialize LCD\n");
 		init_ok = false;
 		return;
 	}
@@ -62,7 +62,7 @@ bool HitachiLCD::lcdClear()
 
 bool HitachiLCD::lcdClearToEOL()
 {
-	for (int i = (cadd % (MAX_COL + 1)); i <= (MAX_COL + 1); i++)
+	for (int i = (cadd % MAX_COL); i <= MAX_COL; i++)
 	{
 		*this << ' ';
 		//lcdWriteByte(handler, ' ', RS_DATA);
@@ -73,8 +73,15 @@ bool HitachiLCD::lcdClearToEOL()
 
 basicLCD& HitachiLCD::operator<<(const unsigned char c)
 {
-	lcdWriteByte(handler, c, RS_DATA);
-	lcdMoveCursorRight();
+	if (cadd <END_SECOND_LINE)
+	{
+		lcdWriteByte(handler, c, RS_DATA);
+		lcdMoveCursorRight();
+	}
+	else
+	{
+		
+	}
 	return *this;
 
 }

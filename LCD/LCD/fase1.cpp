@@ -49,7 +49,7 @@ void lcdWriteByte(FT_HANDLE& handle, byte data, bool rs_)
 }
 
 
-
+/*cambiaaaaaaaaaaaaaaaaaaaaaaaaaaar*/
 void lcdWriteNibble(FT_HANDLE& handle, byte data, bool rs_)
 {
 	DWORD sent = 0;
