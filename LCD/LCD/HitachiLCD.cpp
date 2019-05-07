@@ -159,13 +159,18 @@ HitachiLCD::lcdMoveCursorDown()
 bool
 HitachiLCD::lcdMoveCursorRight()
 {
-	if ((cadd>=BEGIN_FIRST_LINE)&&(cadd < END_SECOND_LINE))//Todo menos la ultima
+	if ((cadd>=BEGIN_FIRST_LINE)&&(cadd <= END_SECOND_LINE))//Todo menos la ultima
 	{
 		cursorPosition newPos;
-		if (SecondLine(cadd)) 
+		if (SecondLine(cadd) && (cadd != END_SECOND_LINE))
 		{
 			newPos.row = 1;
 			newPos.column = cadd - MAX_COL;//NO es necesario hacer +1!
+		}
+		else if (cadd == END_SECOND_LINE)//Estoy al final
+		{
+			newPos.row = 0; //Quiero ir al principio
+			newPos.column = 0;
 		}
 		else if (FirstLine(cadd) && (cadd != END_FIRST_LINE))//Todo menos la ultima
 		{
@@ -179,7 +184,7 @@ HitachiLCD::lcdMoveCursorRight()
 		}
 		return(lcdSetCursorPosition(newPos));		
 	}
-	else return false;//Estoy al final
+	else return false; //No deberia llegar nunca acá
 }
 
 bool
