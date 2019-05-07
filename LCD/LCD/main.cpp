@@ -9,7 +9,7 @@ int main(void)
 	//FT_HANDLE handle;
 	const char * displayname = "EDA LCD 2 B";
 	//lcdInit(displayname, handle);
-	const unsigned char text1[] = "Phil, funciona!";
+	const unsigned char text1[] = "Phil, funciona!AAAAAAAAAAAAAAAAAAAAAAAA";
 	const unsigned char text2[] = "AAAA";
 	
 	//lcdWriteByte(handle, 0x0F, RS_INST);
@@ -36,8 +36,8 @@ int main(void)
 	cursorPosition pos;
 	pos.column = 0;
 	pos.row = 1;
-	lcd.lcdSetCursorPosition(pos); //no funciona
-	lcd << text2;
+	//lcd.lcdSetCursorPosition(pos); //no funciona
+	//lcd << text2;
 
 	printf("press enter\n");
 	getchar();

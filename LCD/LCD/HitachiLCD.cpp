@@ -16,11 +16,12 @@
 #define DDRAM_ADRESS 0x80		//Comando para setear DDRAM
 #define OFFSET_SECOND_LINE 0x30	//Distancia entre primer y segunda linea
 #define ERROR_POS -1 //Valor de error para posiciones
+#define M_SECONDS 1000
 
 HitachiLCD::HitachiLCD()
 {
-	//cadd = 1;
-	cadd = 0;
+	cadd = 1;
+	//cadd = 0;
 	const char * displayname = "EDA LCD 2 B";
 	if (!lcdInit(displayname, handler))
 	{
@@ -54,6 +55,7 @@ FT_STATUS HitachiLCD::lcdGetError()
 bool HitachiLCD::lcdClear()
 {
 	cursorPosition pos;
+	cadd = 1;
 	pos.column = 0;
 	pos.row = 0;
 	lcdWriteByte(handler, LCD_CLEAR_DISPLAY, RS_INST);
@@ -72,17 +74,26 @@ bool HitachiLCD::lcdClearToEOL()
 	return true;
 }
 
+/*Entre los integrantes del grupo se decidio que la mejor forma de imprimir 
+la cadena de caracteres es ir imprimiendolos hasta que se ocupe todo el diplay, 
+borrar el diplay e imprimir el resto.
+Ej. lcd<< "Como ruedan las ruedas del ferrocarril".
+lcd: |C|o|m|o| |r|u|e|d|a|n| |l|a|s| |
+     |r|u|e|d|a|s| |d|e|l| |f|e|r|r|o|
+
+	 |c|a|r|r|i|l| | | | | | | | | | |
+	 | | | | | | | | | | | | | | | | |
+
+*/
 basicLCD& HitachiLCD::operator<<(const unsigned char c)
 {
-	if (cadd <END_SECOND_LINE)
+	if (cadd == BEGIN_FIRST_LINE)
 	{
-		lcdWriteByte(handler, c, RS_DATA);
-		lcdMoveCursorRight();
+		Sleep(250);
+		lcdClear();
 	}
-	else
-	{
-		
-	}
+	lcdWriteByte(handler, c, RS_DATA);
+	lcdMoveCursorRight();
 	return *this;
 
 }
