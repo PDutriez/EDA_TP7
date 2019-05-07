@@ -20,22 +20,18 @@
 
 HitachiLCD::HitachiLCD()
 {
-	cadd = 1;
-	//cadd = 0;
+	cadd = 1; 
+	cleardisplay = false;
 	const char * displayname = "EDA LCD 2 B";
 	if (!lcdInit(displayname, handler))
 	{
-		printf("ERROR: Cannot initialize LCD\n");
+		std::cout << "ERROR: Cannot initialize LCD\n" << std::endl;
 		init_ok = false;
 		return;
 	}
 	init_ok = true;
 	status = FT_OK;
-	lcdWriteByte(handler, 0x0F, RS_INST);		//tratar de hacer un define de 0xf0(display on)
-	//lcdUpdateCursor();
-
-
-	//lcdWriteByte(handler, 'A', RS_DATA);
+	lcdWriteByte(handler, DISPLAYONON, RS_INST);
 }
 HitachiLCD::~HitachiLCD()
 {
@@ -65,11 +61,14 @@ bool HitachiLCD::lcdClear()
 
 bool HitachiLCD::lcdClearToEOL()
 {
-	for (int i = (cadd % MAX_COL); i <= MAX_COL; i++)
+	int backup = cadd;
+	for (int i = (cadd % (MAX_COL)); i <= MAX_COL; i++)
 	{
-		*this << ' ';
-		//lcdWriteByte(handler, ' ', RS_DATA);
+		*this << ' ';	//Equivale a: lcdWriteByte(handler, ' ', RS_DATA);
 	}
+
+	cadd = backup;
+
 	lcdUpdateCursor();
 	return true;
 }
@@ -87,44 +86,32 @@ lcd: |C|o|m|o| |r|u|e|d|a|n| |l|a|s| |
 */
 basicLCD& HitachiLCD::operator<<(const unsigned char c)
 {
-	if (cadd == BEGIN_FIRST_LINE)
+	if (cleardisplay&&(cadd == BEGIN_FIRST_LINE))
 	{
-		Sleep(250);
+		Sleep((DWORD)0.25*M_SECONDS);
 		lcdClear();
+		cleardisplay = false;
 	}
 	lcdWriteByte(handler, c, RS_DATA);
 	lcdMoveCursorRight();
+	if (cadd == BEGIN_FIRST_LINE) 
+	{
+		cleardisplay = true;
+	}
 	return *this;
 
 }
 
 basicLCD& HitachiLCD::operator<<(const unsigned char * c)
 {
-	//Aca hay que considerar algunas cosas (borrar display o sobreescritura).
-	//Si no se discute esto el lunes, preguntar a Richi cuando se vea este mensaje.
-	const char * str =(const char *) c;
-	int len = strlen(str);
-	if (len > 32)
+	int len = strlen((const char *)c);
+	for (int i = 0; i < len; i++)
 	{
-		int beg = len - 32;
-		for (int i = beg; i <= len; i++)
-		{
-			*this << c[i];
-			//lcdWriteByte(handler, c[i], RS_DATA);
-		}
-	}
-	else
-	{
-		for (int i = 0; i < len; i++)
-		{
-			*this << c[i];
-			//lcdWriteByte(handler, c[i], RS_DATA);
-		}
+		*this << c[i];
 	}
 	return *this;
 }
 
-/*Phil*/
 bool
 HitachiLCD::lcdMoveCursorUp()
 {
@@ -216,6 +203,7 @@ HitachiLCD::lcdMoveCursorLeft()
 bool
 HitachiLCD::lcdSetCursorPosition(const cursorPosition pos)
 {
+	cleardisplay = false;
 	if (pos.column <= (MAX_COL-1) && pos.column >= (MIN_COL-1) && pos.row <= MAX_ROW && pos.row >= MIN_ROW)
 	{
 		cadd = (pos.column+1) + MAX_COL * pos.row;

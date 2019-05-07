@@ -44,7 +44,7 @@
 
 //Display control con todo set off
 #define DISPLAYONOFF 0x0E
-
+#define DISPLAYONON	 0x0F
 //Instrucciones
 #define LCD_CLEAR_DISPLAY			(1<<PORT_P0)
 #define LCD_RETURN_HOME				(1<<PORT_P1)

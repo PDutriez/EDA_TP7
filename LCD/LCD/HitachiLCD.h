@@ -63,7 +63,19 @@ public:
 	* Resulta: imprime la cadena de caracteres en la posición actual
 	* del cursor y avanza el cursor al final de la cadena respetando
 	* el gap (si algún carácter no es imprimible lo ignora). Si recibe una
-	* cadena de más de 32 caracteres, muestra los últimos 32 en el display.
+	* cadena de más de 32 caracteres, MUESTRA TODO.
+	* NOTA ALUMNOS:
+	* Entre los integrantes del grupo se decidio que la mejor forma de imprimir
+	*	la cadena de caracteres es ir imprimiendolos hasta que se ocupe todo el diplay,
+	*	borrar el diplay e imprimir el resto.
+	*	Ej. lcd<< "Como ruedan las ruedas del ferrocarril".
+	*	lcd:	|C|o|m|o| |r|u|e|d|a|n| |l|a|s| |
+	*			|r|u|e|d|a|s| |d|e|l| |f|e|r|r|o|
+	*
+	*			|c|a|r|r|i|l| | | | | | | | | | |
+	*			| | | | | | | | | | | | | | | | |
+	*
+	*
 	* Modifica: (cadd)
 	* Devuelve en su nombre una referencia a un basicLCD que permite
 	* encascar la función:
@@ -119,7 +131,7 @@ public:
 	* Name: lcdSetCursorPosition
 	* Entra: Recibe una estructura tipo cursorPosition
 	* Resulta: Posiciona el cursor en la posición dada
-	* por row y column. row[0-1] col[0-19]. Ante un valor inválido
+	* por row y column. row[0-1] col[0-15]. Ante un valor inválido
 	* de row y/o column ignora la instrucción (no hace nada).
 	* Modifica: (cadd).
 	* Devuelve en su nombre “true” si fue satisfactoria “false”
@@ -139,6 +151,7 @@ public:
 private:
 	FT_HANDLE handler;
 	FT_STATUS status;
+	bool cleardisplay;
 	bool init_ok;
 	virtual void lcdUpdateCursor();
 };
