@@ -1,15 +1,16 @@
 #include "HitachiLCD.h"
 #include <string.h>
 #include <stdio.h>
+#include <iostream>
 /*********************************** CONSTANTES ***********************************/
 #define MIN_ROW 0				//Cantidad Minima de filas
 #define MAX_ROW 1				//Cantidad Maxima de filas
-#define MIN_COL 0				//Cantidad Minima de columnas
-#define MAX_COL 15				//Cantidad Maxima de columnas
-#define BEGIN_FIRST_LINE 0		//Inicio de la primera linea
-#define END_FIRST_LINE 15		//Fin de la primera linea
-#define BEGIN_SECOND_LINE 16	//Inicio de la Segunda linea
-#define END_SECOND_LINE 31		//Final de la segunda linea
+#define MIN_COL 1				//Cantidad Minima de columnas
+#define MAX_COL 16				//Cantidad Maxima de columnas
+#define BEGIN_FIRST_LINE 1		//Inicio de la primera linea
+#define END_FIRST_LINE 16		//Fin de la primera linea
+#define BEGIN_SECOND_LINE 17	//Inicio de la Segunda linea
+#define END_SECOND_LINE 32		//Final de la segunda linea
 #define FirstLine(a) (( a>=BEGIN_FIRST_LINE)&&( a<=END_FIRST_LINE)) //Estoy en la primer linea?
 #define SecondLine(a) (( a>=BEGIN_SECOND_LINE)&&( a<=END_SECOND_LINE)) //Estoy en la segunda linea?
 #define DDRAM_ADRESS 0x80		//Comando para setear DDRAM
@@ -114,7 +115,7 @@ HitachiLCD::lcdMoveCursorUp()
 	else if (SecondLine(cadd))
 	{
 		cursorPosition newPos;
-		newPos.column = cadd - MAX_COL;
+		newPos.column = cadd - (MAX_COL+1);//Diferencia entre cursor y cadd
 		newPos.row = 0;
 		return(lcdSetCursorPosition(newPos));
 	}
@@ -129,7 +130,7 @@ HitachiLCD::lcdMoveCursorDown()
 	else if (FirstLine(cadd))
 	{
 		cursorPosition newPos;
-		newPos.column = cadd;
+		newPos.column = cadd-1;//Diferencia entre cursor y cadd 
 		newPos.row = 1;
 		return(lcdSetCursorPosition(newPos));
 	}
@@ -151,17 +152,14 @@ HitachiLCD::lcdMoveCursorRight()
 		else if (FirstLine(cadd) && (cadd != END_FIRST_LINE))//Todo menos la ultima
 		{
 			newPos.row = 0;
-			newPos.column = cadd + 1;
+			newPos.column = cadd;//NO es necesario hacer +1!
 		}
-/* PARA CUANDO RICHARD SE DECIDA!!!
 		else if (cadd == END_FIRST_LINE) //Estoy en la primer linea al final
 		{
 			newPos.row = 1;
 			newPos.column = 0;
 		}
-*/
-		return(lcdSetCursorPosition(newPos)); //segmentation fault, newPos not initialized
-		
+		return(lcdSetCursorPosition(newPos));		
 	}
 	else return false;//Estoy al final
 }
@@ -175,20 +173,18 @@ HitachiLCD::lcdMoveCursorLeft()
 		if (FirstLine(cadd))
 		{
 			newPos.row = 0;
-			newPos.column = cadd - 1;
+			newPos.column = cadd - 2;//Izquierda mas diferencia cursor con cadd
 		}
 		else if (SecondLine(cadd) && (cadd != BEGIN_SECOND_LINE))
 		{
 			newPos.row = 1;
-			newPos.column = cadd - (MAX_COL+1) -1;//Escritura para mejor entendimiento
+			newPos.column = cadd - MAX_COL -1;//Escritura para mejor entendimiento
 		}
-/* PARA CUANDO RICHARD SE DECIDA!!
 		else if (cadd == BEGIN_SECOND_LINE)
 		{
 			newPos.row = 0;
-			newPos.column = END_FIRST_LINE;
+			newPos.column = END_FIRST_LINE-1;//Diferencia entre cursor y cadd
 		}
-*/
 		return(lcdSetCursorPosition(newPos));
 	}
 	else return false;//Estoy al principio
@@ -197,9 +193,9 @@ HitachiLCD::lcdMoveCursorLeft()
 bool
 HitachiLCD::lcdSetCursorPosition(const cursorPosition pos)
 {
-	if (pos.column <= MAX_COL && pos.column >= MIN_COL && pos.row <= MAX_ROW && pos.row >= MIN_ROW)
+	if (pos.column <= (MAX_COL-1) && pos.column >= (MIN_COL-1) && pos.row <= MAX_ROW && pos.row >= MIN_ROW)
 	{
-		cadd = pos.column + MAX_COL * pos.row;
+		cadd = (pos.column+1) + MAX_COL * pos.row;
 		lcdUpdateCursor();
 		return true;
 	}
@@ -213,26 +209,26 @@ HitachiLCD::lcdGetCursorPosition()
 	if (FirstLine(cadd))
 	{
 		currPos.row = 0;
-		currPos.column = cadd;
+		currPos.column = cadd-1;
 	}
 	else if (SecondLine(cadd))
 	{
 		currPos.row = 1;
 		currPos.column = cadd - (MAX_COL+1);
 	}
-	else 
+	else //No deberia entrar aca, "el que avisa no traiciona"
 	{
 		currPos.column = ERROR_POS;
 		currPos.row = ERROR_POS;
+		std::cout << "Error Pos" << std::endl;
 	}
-
 	return currPos;
 }
 
 void
 HitachiLCD::lcdUpdateCursor()
 {
-	unsigned char cadd_ = cadd; //Copia para envio
+	unsigned char cadd_ = cadd-1; //Copia para envio
 
 	if (SecondLine(cadd))
 		cadd_ += OFFSET_SECOND_LINE;
